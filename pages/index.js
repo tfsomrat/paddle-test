@@ -8,17 +8,16 @@ export default function Home() {
     const myResponse = await axios.post("http://localhost:4000/", {
       vendor_id: 11032,
       vendor_auth_code: "907206cf7dd48881a4733adaf63472271ac1be596ecb8d92de",
-      // product_id: 46295,
-      title: "Custom Product",
+      title: "Custom Product 1",
       webhook_url: "https://themefisher.com/api/paddlewebhook",
-      prices: ["USD:19.99"],
+      prices: ["USD:100.00"],
       custom_message: "This is a good product",
       image_url: "https://themefisher.com/images/logo/logo.svg",
       return_url: "http://localhost:3000",
+      discountable: 0,
       quantity_variable: 0,
-      quantity: 1,
       marketing_consent: 1,
-      customer_email: "themefisher.dev@gmail.com",
+      customer_email: "guest.themefisher@gmail.com",
       customer_country: "BD",
       customer_postcode: "1207",
       is_recoverable: 0,
@@ -38,18 +37,8 @@ export default function Home() {
       </Head>
       <PaddleLoader />
       <main className={styles.main}>
-        <button
-          style={{ marginBottom: "40px" }}
-          onClick={() => customUrlhandler()}
-        >
+        <button onClick={() => customUrlhandler()}>
           Purchace Custom Product
-        </button>
-        <button
-          onClick={() => {
-            Paddle.Checkout.open({ product: 46295 });
-          }}
-        >
-          Purchace From Paddle
         </button>
       </main>
     </div>
