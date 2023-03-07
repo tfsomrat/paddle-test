@@ -1,50 +1,33 @@
 import axios from "axios";
 import Head from "next/head";
-import { useEffect, useState } from "react";
 import PaddleLoader from "../components/PaddleLoader";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const options = {
-    method: "POST",
-    url: "https://stoplight.io/mocks/paddle/api-reference/30744709/2.0/product/generate_pay_link",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Prefer: "code=200",
-    },
-    data: {
+  const customUrlhandler = async () => {
+    const myResponse = await axios.post("http://localhost:4000/", {
       vendor_id: 11032,
       vendor_auth_code: "907206cf7dd48881a4733adaf63472271ac1be596ecb8d92de",
-      product_id: 46295,
-      // title: "Custom Product",
-      // webhook_url:
-      //   "https://dirty-chairs-wear-116-206-89-13.loca.lt/api/paddlewebhook",
-      // prices: ["USD:19.99"],
-      // custom_message: "This is a good product",
-      // image_url: "https://themefisher.com/images/logo/logo.svg",
-      // return_url: "/",
-      // quantity_variable: 0,
-      // quantity: 1,
-      // marketing_consent: 1,
-      // customer_email: "themefisher.dev@gmail.com",
-      // customer_country: "BD",
-      // customer_postcode: "1207",
-      // is_recoverable: 0,
-    },
+      // product_id: 46295,
+      title: "Custom Product",
+      webhook_url: "https://themefisher.com/api/paddlewebhook",
+      prices: ["USD:19.99"],
+      custom_message: "This is a good product",
+      image_url: "https://themefisher.com/images/logo/logo.svg",
+      return_url: "http://localhost:3000",
+      quantity_variable: 0,
+      quantity: 1,
+      marketing_consent: 1,
+      customer_email: "themefisher.dev@gmail.com",
+      customer_country: "BD",
+      customer_postcode: "1207",
+      is_recoverable: 0,
+    });
+
+    Paddle.Checkout.open({
+      override: myResponse.data.url,
+    });
   };
-
-  const [customURL, setCustomURL] = useState("");
-
-  useEffect(() => {
-    const handlePaymentURL = async () => {
-      const getURL = await axios.request(options);
-      setCustomURL(getURL.data.response.url);
-    };
-    handlePaymentURL();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(customURL);
 
   return (
     <div className={styles.container}>
@@ -57,11 +40,7 @@ export default function Home() {
       <main className={styles.main}>
         <button
           style={{ marginBottom: "40px" }}
-          onClick={() =>
-            Paddle.Checkout.open({
-              override: customURL,
-            })
-          }
+          onClick={() => customUrlhandler()}
         >
           Purchace Custom Product
         </button>
